@@ -101,3 +101,10 @@ server {
     server_name wg.localhost ~^wg\..+;
     location / { proxy_pass http://host.docker.internal:${WG_PORT}; }
 }
+
+# ── draw.io — Diagramming ─────────────────────────────────────────────────────
+server {
+    listen      80;
+    server_name draw.localhost ~^draw\..+;
+    location / { proxy_pass http://host.docker.internal:${DRAW_PORT}; }
+}

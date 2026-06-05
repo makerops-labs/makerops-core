@@ -79,8 +79,9 @@ Idle RAM and base storage are measured with all services running and only an ini
 | [InvenTree](https://inventree.org) | [8096](http://localhost:8096) | Inventory and parts management | ~1.95 GB | ~140 MB |
 | [Plane](https://plane.so) | [8100](http://localhost:8100) | Project management and work tracking | ~1.85 GB | ~80 MB |
 | [trigger.dev](https://trigger.dev) | [3040](http://localhost:3040) | Background jobs and workflow execution | ~715 MB | ~75 MB |
+| [draw.io](https://www.diagrams.net) | [8085](http://localhost:8085) | Self-hosted diagramming and whiteboard | ~300 MB | ~0 MB |
 | [Garage](https://garagehq.deuxfleurs.fr) | [3900](http://localhost:3900) | S3-compatible object store (Outline backend) | ~30 MB | ~15 MB |
-| **Total** | | | **~6.8 GB** | **~1.1 GB** |
+| **Total** | | | **~7.1 GB** | **~1.1 GB** |
 
 ## Total System Requirements
 
@@ -88,7 +89,7 @@ Idle RAM and base storage are measured with all services running and only an ini
 
 | Resource | Value |
 | -------- | ----- |
-| Idle RAM | ~6.8 GB |
+| Idle RAM | ~7.1 GB |
 | Base volume storage | ~1.1 GB |
 | Container images (disk) | ~17 GB |
 
@@ -100,7 +101,7 @@ Idle RAM and base storage are measured with all services running and only an ini
 | Disk | 25 GB SSD | 50 GB SSD |
 | CPU | 2 cores | 4 cores |
 
-**RAM**: The stack uses ~6.8 GB at idle. An 8 GB host leaves ~1.2 GB for the OS — workable but tight under active use. 16 GB provides comfortable headroom for concurrent users, background job execution, and memory spikes during file uploads or heavy queries.
+**RAM**: The stack uses ~7.1 GB at idle. An 8 GB host leaves ~1.2 GB for the OS — workable but tight under active use. 16 GB provides comfortable headroom for concurrent users, background job execution, and memory spikes during file uploads or heavy queries.
 
 The largest single consumer is InvenTree at ~1.95 GB. Its background worker (`qcluster`) forks multiple Python processes that each load the full Django application into memory; this is expected behavior and reflects the idle baseline, not a memory leak.
 
@@ -162,6 +163,7 @@ cd shared/n8n && ./start.sh
 cd shared/outline && ./start.sh   # start Garage first
 cd shared/plane && ./start.sh
 cd shared/triggerdev && ./start.sh
+cd shared/draw && ./start.sh
 ```
 
 ## First Run Notes
@@ -243,6 +245,7 @@ Each service is a separate Docker Compose project with its own network, volumes,
 | InvenTree | `inventree` | PostgreSQL 17 |
 | Plane | `plane` | PostgreSQL 15 |
 | trigger.dev | `triggerdev` | PostgreSQL 16 |
+| draw.io | `draw` | — (stateless) |
 
 ## License
 

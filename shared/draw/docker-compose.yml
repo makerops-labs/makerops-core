@@ -1,0 +1,25 @@
+# draw — Self-hosted diagramming and whiteboard
+# Project name: draw  (managed by start.sh / stop.sh)
+#
+# Architecture:
+#   draw  — draw.io (Tomcat 9 + JRE 11); stateless, no database required
+#
+# UI: http://localhost:8085
+
+services:
+
+  draw:
+    image: jgraph/drawio:${DRAWIO_VERSION:-latest}
+    container_name: draw
+    restart: unless-stopped
+    environment:
+      DRAWIO_BASE_URL: ${DRAWIO_BASE_URL:-http://localhost:8085}
+      DRAWIO_SERVER_URL: ${DRAWIO_SERVER_URL:-http://localhost:8085/}
+    ports:
+      - "${DRAWIO_PORT_HOST:-8085}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/ || exit 1"]
+      start_period: 30s
+      interval: 30s
+      timeout: 10s
+      retries: 3
