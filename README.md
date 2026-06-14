@@ -64,7 +64,17 @@ Services are organized by labor area:
 
 Supporting infrastructure for remote access to this host (WireGuard VPN, Cloudflare DDNS, SSH key setup) is documented in [remote_access/README.md](remote_access/README.md).
 
-AI services for local LLM inference and agent workflows are documented in [ai/README.md](ai/README.md).
+AI services for local LLM inference and agent workflows are documented in [ai/README.md](ai/README.md). These are optional, GPU-dependent services intended to be brought up on demand.
+
+## AI Services (Optional)
+
+| Service | Port | Purpose |
+| ------- | ---- | ------- |
+| [Ollama](https://ollama.com) | [11434](http://localhost:11434) | Local LLM inference — run open-weight models on GPU |
+| [Open WebUI](https://openwebui.com) | [8080](http://localhost:8080) | Chat UI for local LLMs — conversation history, user accounts, RAG |
+| [ComfyUI](https://github.com/ai-dock/comfyui) | [8188](http://localhost:8188) | FLUX.1 image generation — node-based workflow UI |
+
+See [ai/README.md](ai/README.md) for prerequisites (NVIDIA Container Toolkit) and setup instructions.
 
 ## Services
 

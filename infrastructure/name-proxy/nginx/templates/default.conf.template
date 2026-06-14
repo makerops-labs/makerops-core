@@ -95,6 +95,13 @@ server {
     location / { proxy_pass http://host.docker.internal:${COMFYUI_PORT}; }
 }
 
+# ── Open WebUI — LLM Chat Interface ──────────────────────────────────────────
+server {
+    listen      80;
+    server_name openwebui.localhost ~^openwebui\..+;
+    location / { proxy_pass http://host.docker.internal:${OPENWEBUI_PORT}; }
+}
+
 # ── WireGuard (wg-easy) — VPN Management ─────────────────────────────────────
 server {
     listen      80;
