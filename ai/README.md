@@ -21,6 +21,7 @@ Follow the official installation guide through to the verification step and conf
 | [Ollama](https://ollama.com) | [11434](http://localhost:11434) | Local LLM inference — run open-weight models (Llama, Mistral, Gemma, etc.) on GPU |
 | [Open WebUI](https://openwebui.com) | [8080](http://localhost:8080) | Chat UI for local LLMs — conversation history, user management, RAG, and multi-model support |
 | [ComfyUI](https://github.com/ai-dock/comfyui) | [8188](http://localhost:8188) | FLUX.1 image generation — node-based workflow UI for generative AI image creation |
+| [smolagents](https://github.com/huggingface/smolagents) | [8090](http://localhost:8090) | AI agent workspace — planning, research, and coding agents running against Ollama, with a Gradio chat UI |
 
 ---
 
@@ -31,6 +32,8 @@ Follow the official installation guide through to the verification step and conf
 **Open WebUI** is open-source software developed and maintained by the [Open WebUI contributors](https://github.com/open-webui/open-webui/graphs/contributors), made freely available under the [MIT License](https://github.com/open-webui/open-webui/blob/main/LICENSE).
 
 **ComfyUI** is open-source software developed and maintained by [comfyanonymous](https://github.com/comfyanonymous) and contributors, made freely available under the [GNU GPL v3 License](https://github.com/comfyanonymous/ComfyUI/blob/master/LICENSE). Docker packaging by the [ai-dock contributors](https://github.com/ai-dock/comfyui/graphs/contributors) under the [MIT License](https://github.com/ai-dock/comfyui/blob/main/LICENSE).
+
+**smolagents** is open-source software developed and maintained by [Hugging Face](https://huggingface.co) and the [smolagents contributors](https://github.com/huggingface/smolagents/graphs/contributors), made freely available under the [Apache 2.0 License](https://github.com/huggingface/smolagents/blob/main/LICENSE).
 
 ---
 

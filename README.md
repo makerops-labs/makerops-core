@@ -73,6 +73,7 @@ AI services for local LLM inference and agent workflows are documented in [ai/RE
 | [Ollama](https://ollama.com) | [11434](http://localhost:11434) | Local LLM inference — run open-weight models on GPU |
 | [Open WebUI](https://openwebui.com) | [8080](http://localhost:8080) | Chat UI for local LLMs — conversation history, user accounts, RAG |
 | [ComfyUI](https://github.com/ai-dock/comfyui) | [8188](http://localhost:8188) | FLUX.1 image generation — node-based workflow UI |
+| [smolagents](https://github.com/huggingface/smolagents) | [8090](http://localhost:8090) | AI agent workspace — planning, research, and coding agents over Ollama |
 
 See [ai/README.md](ai/README.md) for prerequisites (NVIDIA Container Toolkit) and setup instructions.
 

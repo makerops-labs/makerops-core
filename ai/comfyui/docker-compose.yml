@@ -18,6 +18,9 @@ services:
     env_file: .env
     volumes:
       - ${COMFYUI_WORKSPACE_PATH:-./data/workspace}:/workspace
+      # ai-dock downloads provisioned models into /opt/storage, not /workspace.
+      # Without this mount they are lost every time the container is recreated.
+      - ${COMFYUI_STORAGE_PATH:-./data/storage}:/opt/storage
     ports:
       - "${COMFYUI_PORT_HOST:-8188}:8188"
       - "${COMFYUI_SERVICEPORTAL_PORT_HOST:-1111}:1111"

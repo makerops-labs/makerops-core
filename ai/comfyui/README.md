@@ -5,7 +5,21 @@ Node-based workflow UI for generative AI image creation. This service uses the [
 The default foundation model is **FLUX.1**:
 
 - **FLUX.1-dev** — higher quality, requires a Hugging Face token and license acceptance
-- **FLUX.1-schnell** — faster, no token required (automatic fallback without `HF_TOKEN`)
+- **FLUX.1-schnell** — faster, no license acceptance required
+
+> ⚠ **Both official Black Forest Labs repos on Hugging Face are now gated** (they return
+> 401 without a token — including FLUX.1-schnell, which the ai-dock provisioning script
+> still assumes is public). Without `HF_TOKEN`, provisioning silently skips the UNET and
+> VAE and ComfyUI starts with no usable image model. Either set `HF_TOKEN` in `.env`
+> before the first start, or download the ungated all-in-one fp8 checkpoint from
+> [Comfy-Org/flux1-schnell](https://huggingface.co/Comfy-Org/flux1-schnell) (17 GB,
+> recommended for ≤16 GB VRAM):
+>
+> ```bash
+> docker exec -u user comfyui wget -qnc --content-disposition \
+>   -P /opt/storage/stable_diffusion/models/ckpt \
+>   https://huggingface.co/Comfy-Org/flux1-schnell/resolve/main/flux1-schnell-fp8.safetensors
+> ```
 
 ## Prerequisites
 
@@ -57,6 +71,11 @@ Before starting, install the NVIDIA Container Toolkit on the host. See [ai/READM
 
 ## Model Storage
 
-All persistent data — models, generated outputs, custom nodes, and configuration — is stored in the workspace volume at `./data/workspace` (or the path set in `COMFYUI_WORKSPACE_PATH`).
+Two host directories back the container:
 
-FLUX models are large. The workspace will be approximately 25 GB after first provisioning. If disk space is a concern, set `COMFYUI_WORKSPACE_PATH` in `.env` to an absolute path on a larger volume before starting.
+- `./data/storage` (`COMFYUI_STORAGE_PATH`) → `/opt/storage` — **models downloaded by provisioning live here.** Without this mount they are container-local and lost on every recreate.
+- `./data/workspace` (`COMFYUI_WORKSPACE_PATH`) → `/workspace` — generated outputs, custom nodes, and configuration.
+
+FLUX models are large (~25 GB). If disk space is a concern, point these variables at absolute paths on a larger volume before starting.
+
+Both directories are pre-created by `start.sh` so they are owned by the invoking user. If Docker creates them instead, they end up root-owned and the container's unprivileged user cannot write to them — provisioning then fails **silently** and reports success with nothing downloaded.

@@ -50,6 +50,14 @@ if [ -f .provisioned ]; then
     fi
 fi
 
+# ── Data directories ──────────────────────────────────────────────────────────
+# Pre-create bind-mount sources so they are owned by the invoking user (uid 1000,
+# matching the container's "user"). If Docker creates them, they are root-owned
+# and provisioning fails silently — models never download.
+WORKSPACE_PATH=$(grep "^COMFYUI_WORKSPACE_PATH=" .env | cut -d= -f2-)
+STORAGE_PATH=$(grep "^COMFYUI_STORAGE_PATH=" .env | cut -d= -f2-)
+mkdir -p "${WORKSPACE_PATH:-./data/workspace}" "${STORAGE_PATH:-./data/storage}"
+
 # ── Start ─────────────────────────────────────────────────────────────────────
 echo "Pulling latest image..."
 docker compose -p "$PROJECT" pull
