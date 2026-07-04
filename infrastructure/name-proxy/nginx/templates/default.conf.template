@@ -95,20 +95,6 @@ server {
     location / { proxy_pass http://host.docker.internal:${COMFYUI_PORT}; }
 }
 
-# ── Open WebUI — LLM Chat Interface ──────────────────────────────────────────
-server {
-    listen      80;
-    server_name openwebui.localhost ~^openwebui\..+;
-    location / { proxy_pass http://host.docker.internal:${OPENWEBUI_PORT}; }
-}
-
-# ── smolagents — AI Agents ────────────────────────────────────────────────────
-server {
-    listen      80;
-    server_name agents.localhost ~^agents\..+;
-    location / { proxy_pass http://host.docker.internal:${SMOLAGENTS_PORT}; }
-}
-
 # ── WireGuard (wg-easy) — VPN Management ─────────────────────────────────────
 server {
     listen      80;
@@ -123,16 +109,3 @@ server {
     location / { proxy_pass http://host.docker.internal:${DRAW_PORT}; }
 }
 
-# ── SearXNG — Metasearch Engine ──────────────────────────────────────────────
-server {
-    listen      80;
-    server_name search.localhost ~^search\..+;
-    location / { proxy_pass http://host.docker.internal:${SEARXNG_PORT}; }
-}
-
-# ── MCP Tools — LLM Tool Server & Write Approvals ────────────────────────────
-server {
-    listen      80;
-    server_name mcp.localhost ~^mcp\..+;
-    location / { proxy_pass http://host.docker.internal:${MCPTOOLS_PORT}; }
-}

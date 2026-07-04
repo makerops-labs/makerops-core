@@ -1,6 +1,6 @@
 # AI
 
-Self-hosted AI services for local LLM inference and agent workflows. These services run open-weight language models entirely on-premise — no API keys, no data leaving the host, no per-token costs — and are designed to integrate with the core stack (particularly n8n for automated workflows).
+Self-hosted AI services for local inference. These services run open-weight models entirely on-premise — no API keys, no data leaving the host, no per-token costs — and are designed to integrate with the core stack (particularly n8n for automated workflows).
 
 AI services are started individually rather than through `start-all.sh`. They are optional, GPU-dependent, and resource-intensive relative to the core stack; they are intended to be brought up on demand rather than run continuously alongside core services.
 
@@ -18,21 +18,10 @@ Follow the official installation guide through to the verification step and conf
 
 | Service | Port | Purpose |
 | ------- | ---- | ------- |
-| [Ollama](https://ollama.com) | [11434](http://localhost:11434) | Local LLM inference — run open-weight models (Llama, Mistral, Gemma, etc.) on GPU |
-| [Open WebUI](https://openwebui.com) | [8080](http://localhost:8080) | Chat UI for local LLMs — conversation history, user management, RAG, and multi-model support |
+| [Ollama](https://ollama.com) | [11434](http://localhost:11434) | Local LLM inference — run open-weight models (Llama, Mistral, Gemma, Qwen, etc.) on GPU, with REST and OpenAI-compatible APIs |
 | [ComfyUI](https://github.com/ai-dock/comfyui) | [8188](http://localhost:8188) | FLUX.1 image generation — node-based workflow UI for generative AI image creation |
-| [smolagents](https://github.com/huggingface/smolagents) | [8090](http://localhost:8090) | AI agent workspace — planning, research, and coding agents running against Ollama, with a Gradio chat UI |
-| [SearXNG](https://github.com/searxng/searxng) | [8098](http://localhost:8098) | Private metasearch engine — free web search backend for Open WebUI and mcp-tools (no GPU required) |
-| MCP Tools | [8099](http://localhost:8099/healthz) | Shared MCP tool server — web search/fetch plus read/write tools for Outline, InvenTree, Plane, n8n, ComfyUI, FreeScout, draw.io, and trigger.dev, with human write-approvals (no GPU required) |
 
-### Startup order
-
-Ollama first (with `qwen3-coder:30b` and `gemma4:12b` pulled), then SearXNG,
-then mcp-tools, then Open WebUI and/or smolagents. SearXNG and mcp-tools have
-no GPU dependency and are safe to leave running continuously. The full
-tool-access setup (API tokens, Open WebUI connections, context presets,
-approval tuning) is walked through in
-[docs/ai-setup-checklist.md](../docs/ai-setup-checklist.md).
+Both are self-contained Docker Compose projects with their own `start.sh` / `stop.sh` / `teardown.sh` and `.env.example`. Models are pulled/provisioned on demand and persist in each service's data path.
 
 ---
 
@@ -40,15 +29,7 @@ approval tuning) is walked through in
 
 **Ollama** is open-source software developed and maintained by the [Ollama contributors](https://github.com/ollama/ollama/graphs/contributors), made freely available under the [MIT License](https://github.com/ollama/ollama/blob/main/LICENSE).
 
-**Open WebUI** is open-source software developed and maintained by the [Open WebUI contributors](https://github.com/open-webui/open-webui/graphs/contributors), made freely available under the [MIT License](https://github.com/open-webui/open-webui/blob/main/LICENSE).
-
 **ComfyUI** is open-source software developed and maintained by [comfyanonymous](https://github.com/comfyanonymous) and contributors, made freely available under the [GNU GPL v3 License](https://github.com/comfyanonymous/ComfyUI/blob/master/LICENSE). Docker packaging by the [ai-dock contributors](https://github.com/ai-dock/comfyui/graphs/contributors) under the [MIT License](https://github.com/ai-dock/comfyui/blob/main/LICENSE).
-
-**smolagents** is open-source software developed and maintained by [Hugging Face](https://huggingface.co) and the [smolagents contributors](https://github.com/huggingface/smolagents/graphs/contributors), made freely available under the [Apache 2.0 License](https://github.com/huggingface/smolagents/blob/main/LICENSE).
-
-**SearXNG** is open-source software developed and maintained by the [SearXNG contributors](https://github.com/searxng/searxng/graphs/contributors), made freely available under the [AGPL-3.0 License](https://github.com/searxng/searxng/blob/master/LICENSE).
-
-**FastMCP** (used by the mcp-tools service) is open-source software developed and maintained by the [FastMCP contributors](https://github.com/jlowin/fastmcp/graphs/contributors), made freely available under the [Apache 2.0 License](https://github.com/jlowin/fastmcp/blob/main/LICENSE).
 
 ---
 
@@ -60,6 +41,6 @@ AI workloads are substantially more resource-intensive than the core stack. Requ
 | -------- | ----- |
 | GPU | NVIDIA GPU required. VRAM determines which models can run: 8 GB handles 7B–8B parameter models; 24 GB handles up to 34B; 80 GB handles 70B. |
 | Disk | Models range from ~1 GB (smallest quantized) to 70+ GB (large). The `ollama_data` volume grows with each model pulled. A fast NVMe drive is recommended. |
-| RAM | Minimal host RAM overhead — model weights live in VRAM, not system RAM. |
+| RAM | Models that fit VRAM add minimal host RAM overhead. Models larger than VRAM partially offload weights to system RAM — budget roughly the overflow plus a few GB. On WSL2, raise the memory cap in `.wslconfig` if a large model stalls or thrashes. |
 
 See [ollama/README.md](ollama/README.md) for setup instructions, model management, and API usage.
