@@ -122,3 +122,17 @@ server {
     server_name draw.localhost ~^draw\..+;
     location / { proxy_pass http://host.docker.internal:${DRAW_PORT}; }
 }
+
+# ── SearXNG — Metasearch Engine ──────────────────────────────────────────────
+server {
+    listen      80;
+    server_name search.localhost ~^search\..+;
+    location / { proxy_pass http://host.docker.internal:${SEARXNG_PORT}; }
+}
+
+# ── MCP Tools — LLM Tool Server & Write Approvals ────────────────────────────
+server {
+    listen      80;
+    server_name mcp.localhost ~^mcp\..+;
+    location / { proxy_pass http://host.docker.internal:${MCPTOOLS_PORT}; }
+}

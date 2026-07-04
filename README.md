@@ -74,8 +74,10 @@ AI services for local LLM inference and agent workflows are documented in [ai/RE
 | [Open WebUI](https://openwebui.com) | [8080](http://localhost:8080) | Chat UI for local LLMs — conversation history, user accounts, RAG |
 | [ComfyUI](https://github.com/ai-dock/comfyui) | [8188](http://localhost:8188) | FLUX.1 image generation — node-based workflow UI |
 | [smolagents](https://github.com/huggingface/smolagents) | [8090](http://localhost:8090) | AI agent workspace — planning, research, and coding agents over Ollama |
+| [SearXNG](https://github.com/searxng/searxng) | [8098](http://localhost:8098) | Private metasearch engine — free web search backend for the LLM tools (no GPU) |
+| MCP Tools | [8099](http://localhost:8099/healthz) | Shared MCP tool server — web search, service APIs, and human write-approvals for the LLMs (no GPU) |
 
-See [ai/README.md](ai/README.md) for prerequisites (NVIDIA Container Toolkit) and setup instructions.
+See [ai/README.md](ai/README.md) for prerequisites (NVIDIA Container Toolkit) and setup instructions, and [docs/ai-setup-checklist.md](docs/ai-setup-checklist.md) for the step-by-step LLM tool-access setup.
 
 ## Services
 

@@ -22,6 +22,17 @@ Follow the official installation guide through to the verification step and conf
 | [Open WebUI](https://openwebui.com) | [8080](http://localhost:8080) | Chat UI for local LLMs — conversation history, user management, RAG, and multi-model support |
 | [ComfyUI](https://github.com/ai-dock/comfyui) | [8188](http://localhost:8188) | FLUX.1 image generation — node-based workflow UI for generative AI image creation |
 | [smolagents](https://github.com/huggingface/smolagents) | [8090](http://localhost:8090) | AI agent workspace — planning, research, and coding agents running against Ollama, with a Gradio chat UI |
+| [SearXNG](https://github.com/searxng/searxng) | [8098](http://localhost:8098) | Private metasearch engine — free web search backend for Open WebUI and mcp-tools (no GPU required) |
+| MCP Tools | [8099](http://localhost:8099/healthz) | Shared MCP tool server — web search/fetch plus read/write tools for Outline, InvenTree, Plane, n8n, ComfyUI, FreeScout, draw.io, and trigger.dev, with human write-approvals (no GPU required) |
+
+### Startup order
+
+Ollama first (with `qwen3-coder:30b` and `gemma4:12b` pulled), then SearXNG,
+then mcp-tools, then Open WebUI and/or smolagents. SearXNG and mcp-tools have
+no GPU dependency and are safe to leave running continuously. The full
+tool-access setup (API tokens, Open WebUI connections, context presets,
+approval tuning) is walked through in
+[docs/ai-setup-checklist.md](../docs/ai-setup-checklist.md).
 
 ---
 
@@ -34,6 +45,10 @@ Follow the official installation guide through to the verification step and conf
 **ComfyUI** is open-source software developed and maintained by [comfyanonymous](https://github.com/comfyanonymous) and contributors, made freely available under the [GNU GPL v3 License](https://github.com/comfyanonymous/ComfyUI/blob/master/LICENSE). Docker packaging by the [ai-dock contributors](https://github.com/ai-dock/comfyui/graphs/contributors) under the [MIT License](https://github.com/ai-dock/comfyui/blob/main/LICENSE).
 
 **smolagents** is open-source software developed and maintained by [Hugging Face](https://huggingface.co) and the [smolagents contributors](https://github.com/huggingface/smolagents/graphs/contributors), made freely available under the [Apache 2.0 License](https://github.com/huggingface/smolagents/blob/main/LICENSE).
+
+**SearXNG** is open-source software developed and maintained by the [SearXNG contributors](https://github.com/searxng/searxng/graphs/contributors), made freely available under the [AGPL-3.0 License](https://github.com/searxng/searxng/blob/master/LICENSE).
+
+**FastMCP** (used by the mcp-tools service) is open-source software developed and maintained by the [FastMCP contributors](https://github.com/jlowin/fastmcp/graphs/contributors), made freely available under the [Apache 2.0 License](https://github.com/jlowin/fastmcp/blob/main/LICENSE).
 
 ---
 
