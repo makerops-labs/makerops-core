@@ -295,16 +295,17 @@
     { cat: "Infrastructure", name: "name-proxy",      desc: "Subdomain Reverse Proxy",     sub: "",             readme: "infrastructure/name-proxy/README.md",          icon: null },
   ];
 
-  // Optional untracked drop-in: extra service entries in the same shape as
-  // SERVICES (a "readme" starting with http is used as-is). 404 = no extras.
+  // Optional untracked drop-in: { "Category": [entries] }, entries shaped
+  // like SERVICES minus "cat" (a "readme" starting with http is used as-is).
+  // 404 = no extras. Unknown categories render after the known ones.
   async function loadLocalServices() {
     try {
       const resp = await fetch("local-services.json", { cache: "no-store" });
-      if (!resp.ok) return [];
+      if (!resp.ok) return {};
       const extra = await resp.json();
-      return Array.isArray(extra) ? extra : [];
+      return extra && typeof extra === "object" && !Array.isArray(extra) ? extra : {};
     } catch {
-      return [];
+      return {};
     }
   }
 
@@ -318,14 +319,19 @@
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  function render(services) {
+  function render(services, localGroups) {
     const parent = getParentDomain();
     const byCategory = {};
     services.forEach(s => { (byCategory[s.cat] = byCategory[s.cat] || []).push(s); });
+    Object.entries(localGroups).forEach(([cat, entries]) => {
+      if (!Array.isArray(entries)) return;
+      (byCategory[cat] = byCategory[cat] || []).push(...entries);
+    });
 
     const main = document.getElementById("service-list");
+    const cats = CAT_ORDER.concat(Object.keys(byCategory).filter(c => !CAT_ORDER.includes(c)));
 
-    CAT_ORDER.forEach(cat => {
+    cats.forEach(cat => {
       if (!byCategory[cat]) return;
 
       const section = document.createElement("section");
@@ -364,7 +370,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
-    render(SERVICES.concat(await loadLocalServices()));
+    render(SERVICES, await loadLocalServices());
   });
 </script>
 

@@ -11,6 +11,7 @@
 # ── Local-only name-proxy drop-ins (never tracked) ────────────────────────────
 infrastructure/name-proxy/nginx/templates/local-*.conf.template
 infrastructure/name-proxy/html/local-*.json
+infrastructure/name-proxy/html/local-icons/
 
 # ── Environment sync (gist clone and config) ──────────────────────────────────
 .envs-gist/
