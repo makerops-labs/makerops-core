@@ -8,8 +8,9 @@
 # ── Environment files (belt-and-suspenders; each service dir has its own) ────
 **/.env
 
-# ── Local-only nginx route drop-ins (never tracked) ───────────────────────────
+# ── Local-only name-proxy drop-ins (never tracked) ────────────────────────────
 infrastructure/name-proxy/nginx/templates/local-*.conf.template
+infrastructure/name-proxy/html/local-*.json
 
 # ── Environment sync (gist clone and config) ──────────────────────────────────
 .envs-gist/

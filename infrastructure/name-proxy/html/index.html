@@ -295,6 +295,19 @@
     { cat: "Infrastructure", name: "name-proxy",      desc: "Subdomain Reverse Proxy",     sub: "",             readme: "infrastructure/name-proxy/README.md",          icon: null },
   ];
 
+  // Optional untracked drop-in: extra service entries in the same shape as
+  // SERVICES (a "readme" starting with http is used as-is). 404 = no extras.
+  async function loadLocalServices() {
+    try {
+      const resp = await fetch("local-services.json", { cache: "no-store" });
+      if (!resp.ok) return [];
+      const extra = await resp.json();
+      return Array.isArray(extra) ? extra : [];
+    } catch {
+      return [];
+    }
+  }
+
   function getParentDomain() {
     const host = window.location.hostname;
     const dot = host.indexOf(".");
@@ -305,10 +318,10 @@
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  function render() {
+  function render(services) {
     const parent = getParentDomain();
     const byCategory = {};
-    SERVICES.forEach(s => { (byCategory[s.cat] = byCategory[s.cat] || []).push(s); });
+    services.forEach(s => { (byCategory[s.cat] = byCategory[s.cat] || []).push(s); });
 
     const main = document.getElementById("service-list");
 
@@ -323,7 +336,7 @@
       ul.className = "service-list";
 
       byCategory[cat].forEach(svc => {
-        const readmeUrl = GITHUB_BASE + svc.readme;
+        const readmeUrl = svc.readme.startsWith("http") ? svc.readme : GITHUB_BASE + svc.readme;
         const hasUi = Boolean(svc.sub);
         const serviceUrl = hasUi ? `http://${svc.sub}.${parent}` : readmeUrl;
         const iconHtml = svc.icon
@@ -350,7 +363,9 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", render);
+  document.addEventListener("DOMContentLoaded", async () => {
+    render(SERVICES.concat(await loadLocalServices()));
+  });
 </script>
 
 </body>
