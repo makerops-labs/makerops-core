@@ -54,6 +54,25 @@ Some services in this stack are also offered as vendor-managed SaaS products. Th
 
 ---
 
+## Quick Start
+
+```bash
+# 1. One-time host prerequisites: Docker Engine 24+, Compose v2.20+, openssl.
+# 2. Start the services you want — each from its own directory:
+cd infrastructure/garage && ./start.sh     # object store (needed by Outline)
+cd ../../shared/outline && ./start.sh
+cd ../n8n && ./start.sh                    # ...and so on, see the table below
+# 3. Optional but recommended — friendly names for everything:
+cd ../../infrastructure/name-proxy && ./start.sh
+```
+
+`start.sh` copies `.env.example` → `.env` on first run, generates any needed
+secrets, pulls images, and starts the service. With name-proxy running, open
+**<http://root.localhost>** — a landing page listing every service with links
+(`n8n.localhost`, `outline.localhost`, …) instead of memorizing ports. Stop a
+service with its `./stop.sh` (data preserved); wipe it with `./teardown.sh`
+(interactive, destructive).
+
 Services are organized by labor area:
 
 - [accounting/](accounting/README.md) — finance and billing staff
@@ -255,6 +274,42 @@ Each service is a separate Docker Compose project with its own network, volumes,
 | Plane | `plane` | PostgreSQL 15 |
 | trigger.dev | `triggerdev` | PostgreSQL 16 |
 | draw.io | `draw` | — (stateless) |
+
+## Tips, Gotchas & Debugging
+
+Hard-won specifics — check here before deep-diving:
+
+- **`.env` inline comments become values.** Env files are read via compose
+  `env_file`: everything after `=` is the value, including trailing
+  `# comments`.
+  Comments go on their own line. (This has silently broken S3 credentials.)
+- **`docker compose restart` does NOT re-read `.env`.** Apply env changes by
+  recreating: `cd <service> && docker compose -p <project> up -d`. Project
+  names match the directory (see Architecture Notes).
+- **WSL2 networking**: the host resolver is unreachable from Docker bridge
+  networks — containers needing outbound DNS carry explicit
+  `dns: [8.8.8.8, 1.1.1.1]`, and image builds use `network: host`. Keep both
+  patterns when adding services. Cross-service calls go through
+  `host.docker.internal` (`extra_hosts: host.docker.internal:host-gateway`).
+- **WSL2 memory**: heavy stacks (especially AI models larger than VRAM) need
+  headroom — raise the cap in Windows-side `.wslconfig` (`[wsl2]`
+  `memory=24GB`) and `wsl --shutdown` if processes are OOM-killed
+  (`signal: killed` in logs).
+- **Logs**: `docker compose -p <project> logs -f` (or `docker logs
+  <container> -f`). First stop for any misbehaving service.
+- **A service URL must match the browser host.** Services that bake their
+  public URL into config (e.g. Outline's `URL`) enforce it via CSP — assets
+  load (200s) but the app fails if you browse via a different hostname than
+  configured. Pick one hostname and set it everywhere.
+- **Landing page shows a dead link?** The proxy renders routes at container
+  start — after changing `nginx/templates/`, recreate:
+  `docker compose -p name-proxy up -d --force-recreate`. The `html/` mount
+  (landing page, `local-*` drop-ins) is live and only needs a refresh.
+- **Port conflicts**: every host port is set in the service's `.env`; the
+  canonical port map is `infrastructure/name-proxy/docker-compose.yml`
+  (env defaults). Change both together.
+- **Before wiping anything**, remember `teardown.sh` and `stop.sh --volumes`
+  destroy data volumes permanently — plain `stop.sh` is always safe.
 
 ## License
 
