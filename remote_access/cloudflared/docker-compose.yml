@@ -1,0 +1,30 @@
+# cloudflared — Cloudflare Tunnel
+# Project name: cloudflared  (managed by start.sh / stop.sh)
+#
+# Outbound-only connection from this host to Cloudflare's edge — no port is
+# exposed here, no router port-forward is needed, and there is no listening
+# socket for anything to scan. Cloudflare terminates public HTTPS traffic
+# for the hostname(s) in config/config.yml and relays it over this tunnel
+# to whatever local service that file's ingress rules point at.
+#
+# config/config.yml (and its credentials-*.json) is gitignored and NOT
+# supplied here — see README.md for the one-time `cloudflared tunnel
+# login/create/route dns` setup, and makerops-ai/proxy/README.md for the
+# private ingress-rule template that gets copied into config/config.yml
+# (same "public repo carries generic plumbing, private repo supplies the
+# actual route" convention as name-proxy's local-ai.conf.template).
+
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    command: tunnel --config /etc/cloudflared/config.yml run
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    env_file: .env
+    volumes:
+      - ./config:/etc/cloudflared:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
