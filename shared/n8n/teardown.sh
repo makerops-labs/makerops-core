@@ -4,8 +4,9 @@
 #
 # WARNING: data volumes are permanently deleted. This cannot be undone.
 # After teardown, re-running start.sh creates a fresh installation.
-# Note: N8N_ENCRYPTION_KEY and RUNNERS_AUTH_TOKEN in .env are not reset —
-#       replace them with OVERWRITE_ME beforehand for a fully fresh install.
+# Note: N8N_ENCRYPTION_KEY, RUNNERS_AUTH_TOKEN, POSTGRES_PASSWORD and
+#       POSTGRES_NON_ROOT_PASSWORD in .env are not reset — replace them with
+#       OVERWRITE_ME beforehand for a fully fresh install.
 set -e
 
 PROJECT=n8n

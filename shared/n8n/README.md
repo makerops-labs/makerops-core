@@ -95,7 +95,8 @@ Interactive full teardown — lists what will be removed, prompts for confirmati
 | `EXECUTIONS_DATA_MAX_AGE` | `336` (14 days) | Hours to keep execution records before pruning |
 | `EXECUTIONS_DATA_PRUNE_MAX_COUNT` | `50000` | Maximum execution records to keep |
 | `POSTGRES_NON_ROOT_USER` | `n8n_user` | The DB user n8n connects as at runtime |
-| `POSTGRES_NON_ROOT_PASSWORD` | `n8n_user_pass` | Its password |
+| `POSTGRES_PASSWORD` | *(generated)* | Postgres superuser password (init + healthcheck only) |
+| `POSTGRES_NON_ROOT_PASSWORD` | *(generated)* | Its password |
 
 ---
 
