@@ -1,6 +1,7 @@
 #!/bin/bash
 # Starts the n8n workflow automation stack.
-# Auto-generates N8N_ENCRYPTION_KEY and RUNNERS_AUTH_TOKEN on first run.
+# Auto-generates N8N_ENCRYPTION_KEY, RUNNERS_AUTH_TOKEN and both Postgres
+# passwords on first run.
 # On subsequent runs the database and volumes already exist — n8n resumes.
 set -e
 
@@ -23,6 +24,17 @@ if grep -q "^RUNNERS_AUTH_TOKEN=OVERWRITE_ME" .env 2>/dev/null; then
     sed -i "s|^RUNNERS_AUTH_TOKEN=OVERWRITE_ME|RUNNERS_AUTH_TOKEN=${TOKEN}|" .env
     echo "RUNNERS_AUTH_TOKEN saved to .env"
 fi
+
+# Postgres passwords: hex only, so they are safe inside init-data.sh's SQL
+# string. Only takes effect before the database is first initialized.
+for var in POSTGRES_PASSWORD POSTGRES_NON_ROOT_PASSWORD; do
+    if grep -q "^${var}=OVERWRITE_ME" .env 2>/dev/null; then
+        echo "Generating ${var}..."
+        PW=$(openssl rand -hex 16)
+        sed -i "s|^${var}=OVERWRITE_ME|${var}=${PW}|" .env
+        echo "${var} saved to .env"
+    fi
+done
 
 # ── Ensure n8n data directory is writable by the node user (UID 1000) ─────────
 # Docker Compose creates missing bind-mount host directories as root:root.
