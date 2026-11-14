@@ -141,9 +141,9 @@ plane_create_bucket — One-shot MinIO bucket initialisation (exits after succes
 | `plane_db` | `postgres:15.7-alpine` | Application database |
 | `plane_redis` | `valkey/valkey:7.2.11-alpine` | Cache and Celery results backend |
 | `plane_mq` | `rabbitmq:3.13.6-management-alpine` | Celery message broker |
-| `plane_minio` | `minio/minio:latest` | Object storage (file uploads) |
+| `plane_minio` | `pgsty/silo:RELEASE.2026-09-16T00-00-00Z` | Object storage (file uploads), maintained MinIO fork |
 | `plane_migrator` | `makeplane/plane-backend:v1.3.0` | One-shot migration runner |
-| `plane_create_bucket` | `minio/mc:latest` | One-shot MinIO bucket creation |
+| `plane_create_bucket` | `pgsty/mc:latest` | One-shot bucket creation |
 | `plane_api` | `makeplane/plane-backend:v1.3.0` | Django/Gunicorn API |
 | `plane_worker` | `makeplane/plane-backend:v1.3.0` | Celery worker |
 | `plane_beat_worker` | `makeplane/plane-backend:v1.3.0` | Celery beat scheduler |
