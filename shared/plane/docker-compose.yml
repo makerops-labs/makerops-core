@@ -189,7 +189,7 @@ services:
 
   # ── Database migrations (one-shot) ────────────────────────────────────────────
   migrator:
-    image: makeplane/plane-backend:${APP_RELEASE:-v1.3.0}
+    image: makeplane/plane-backend:${APP_RELEASE:-v1.4.3}
     pull_policy: if_not_present
     container_name: plane_migrator
     command: ./bin/docker-entrypoint-migrator.sh
@@ -208,7 +208,7 @@ services:
 
   # ── API backend ───────────────────────────────────────────────────────────────
   api:
-    image: makeplane/plane-backend:${APP_RELEASE:-v1.3.0}
+    image: makeplane/plane-backend:${APP_RELEASE:-v1.4.3}
     pull_policy: if_not_present
     container_name: plane_api
     command: ./bin/docker-entrypoint-api.sh
@@ -233,7 +233,7 @@ services:
 
   # ── Background workers ────────────────────────────────────────────────────────
   worker:
-    image: makeplane/plane-backend:${APP_RELEASE:-v1.3.0}
+    image: makeplane/plane-backend:${APP_RELEASE:-v1.4.3}
     pull_policy: if_not_present
     container_name: plane_worker
     command: ./bin/docker-entrypoint-worker.sh
@@ -248,7 +248,7 @@ services:
       - api
 
   beat-worker:
-    image: makeplane/plane-backend:${APP_RELEASE:-v1.3.0}
+    image: makeplane/plane-backend:${APP_RELEASE:-v1.4.3}
     pull_policy: if_not_present
     container_name: plane_beat_worker
     command: ./bin/docker-entrypoint-beat.sh
@@ -264,7 +264,7 @@ services:
 
   # ── Frontend services ─────────────────────────────────────────────────────────
   web:
-    image: makeplane/plane-frontend:${APP_RELEASE:-v1.3.0}
+    image: makeplane/plane-frontend:${APP_RELEASE:-v1.4.3}
     pull_policy: if_not_present
     container_name: plane_web
     restart: unless-stopped
@@ -275,7 +275,7 @@ services:
       - worker
 
   space:
-    image: makeplane/plane-space:${APP_RELEASE:-v1.3.0}
+    image: makeplane/plane-space:${APP_RELEASE:-v1.4.3}
     pull_policy: if_not_present
     container_name: plane_space
     restart: unless-stopped
@@ -287,7 +287,7 @@ services:
       - web
 
   admin:
-    image: makeplane/plane-admin:${APP_RELEASE:-v1.3.0}
+    image: makeplane/plane-admin:${APP_RELEASE:-v1.4.3}
     pull_policy: if_not_present
     container_name: plane_admin
     restart: unless-stopped
@@ -299,7 +299,7 @@ services:
 
   # ── Real-time collaboration ───────────────────────────────────────────────────
   live:
-    image: makeplane/plane-live:${APP_RELEASE:-v1.3.0}
+    image: makeplane/plane-live:${APP_RELEASE:-v1.4.3}
     pull_policy: if_not_present
     container_name: plane_live
     restart: unless-stopped
@@ -313,7 +313,7 @@ services:
 
   # ── Reverse proxy — host port 8100 ────────────────────────────────────────────
   proxy:
-    image: makeplane/plane-proxy:${APP_RELEASE:-v1.3.0}
+    image: makeplane/plane-proxy:${APP_RELEASE:-v1.4.3}
     pull_policy: if_not_present
     container_name: plane_proxy
     restart: unless-stopped
