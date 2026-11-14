@@ -11,7 +11,7 @@
 
 services:
   garage:
-    image: dxflrs/garage:${GARAGE_VERSION:-v2.3.0}
+    image: dxflrs/garage:${GARAGE_VERSION:-v2.5.0}
     container_name: garage
     env_file: .env
     restart: unless-stopped
