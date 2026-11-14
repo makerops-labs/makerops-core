@@ -53,8 +53,9 @@ services:
       DB_USER: freescout
       DB_PASS: "${DB_PASSWORD}"
       APP_URL: "${SITE_URL:-http://localhost:8095}"
-      # Hosts other than APP_URL's get a 403; include the name-proxy route.
-      FREESCOUT_APP_TRUSTED_HOSTS: "${APP_TRUSTED_HOSTS:-localhost,127.0.0.1,freescout.localhost}"
+      # Any Host not listed gets a 403. Include the name-proxy route and
+      # host.docker.internal (how other containers in this stack reach the API).
+      FREESCOUT_APP_TRUSTED_HOSTS: "${APP_TRUSTED_HOSTS:-localhost,127.0.0.1,host.docker.internal,freescout.localhost}"
       ADMIN_EMAIL: "${ADMIN_EMAIL}"
       ADMIN_PASS: "${ADMIN_PASS}"
       FREESCOUT_APP_DEBUG: "FALSE"
