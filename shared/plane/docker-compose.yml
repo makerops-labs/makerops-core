@@ -147,8 +147,11 @@ services:
       retries: 10
 
   # ── Object storage ────────────────────────────────────────────────────────────
+  # pgsty/silo is a maintained MinIO fork (same CLI, env and on-disk format).
+  # minio/minio was removed from Docker Hub; Plane's own compose switched to
+  # silo as of v1.4.3.
   plane-minio:
-    image: minio/minio:latest
+    image: pgsty/silo:RELEASE.2026-09-16T00-00-00Z
     pull_policy: if_not_present
     container_name: plane_minio
     command: server /export --console-address ":9090"
@@ -168,7 +171,7 @@ services:
 
   # ── MinIO bucket init (one-shot) ─────────────────────────────────────────────
   create-bucket:
-    image: minio/mc:latest
+    image: pgsty/mc:latest
     pull_policy: if_not_present
     container_name: plane_create_bucket
     entrypoint:

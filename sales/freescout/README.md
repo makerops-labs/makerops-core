@@ -7,13 +7,13 @@ FreeScout is an open-source help desk and shared mailbox application — a self-
 - **Home page:** https://freescout.net
 - **Docs:** https://github.com/freescout-help-desk/freescout/wiki
 - **GitHub:** https://github.com/freescout-help-desk/freescout
-- **Docker image:** https://hub.docker.com/r/tiredofit/freescout
+- **Docker image:** https://hub.docker.com/r/nfrastack/freescout
 
 ---
 
 ## Attribution
 
-**FreeScout** is open-source software developed and maintained by the FreeScout team. It is made freely available under the [AGPL-3.0 License](https://github.com/freescout-help-desk/freescout/blob/master/LICENSE). The Docker image used here is maintained by [tiredofit](https://github.com/tiredofit), an independent contributor who packages FreeScout and many other applications as community Docker images.
+**FreeScout** is open-source software developed and maintained by the FreeScout team. It is made freely available under the [AGPL-3.0 License](https://github.com/freescout-help-desk/freescout/blob/master/LICENSE). The Docker image used here is [nfrastack/container-freescout](https://github.com/nfrastack/container-freescout), which its upgrade notes document as the successor to the community `tiredofit/freescout` image (now removed from Docker Hub).
 
 - **Support FreeScout:** [GitHub Sponsors](https://github.com/sponsors/freescout-help-desk)
 - **Purchase premium modules:** [freescout.net/modules](https://freescout.net/modules) — the project sustains itself in part through paid extension modules for features like Slack integration, AI replies, and advanced reporting
@@ -85,6 +85,7 @@ Interactive full teardown with confirmation prompt — removes all containers, v
 | `ADMIN_EMAIL` | `admin@admin.com` | Admin login email — set before first start; ignored after DB is seeded |
 | `ADMIN_PASS` | `changeme` | Admin password — set before first start; **change this** |
 | `SITE_URL` | `http://localhost:8095` | Must match the browser URL; changing it after first start requires a DB update |
+| `APP_TRUSTED_HOSTS` | `localhost,127.0.0.1,freescout.localhost` | Hostnames FreeScout answers on; others get a 403. Keep `localhost` (used by the healthcheck) and add `SITE_URL`'s hostname if it differs |
 | `FREESCOUT_PORT` | `8095` | Host port |
 | `DB_PASSWORD` | `freescout_db_pass` | MariaDB app user password |
 | `MYSQL_ROOT_PASSWORD` | `freescout_root_pass` | MariaDB root password |
@@ -99,7 +100,7 @@ Interactive full teardown with confirmation prompt — removes all containers, v
 ```
 Browser
   └─► localhost:8095
-        └─► freescout  (Nginx + PHP-FPM — tiredofit image)
+        └─► freescout  (Nginx + PHP-FPM — nfrastack image)
               └─► freescout_db:3306  (MariaDB 11)
 ```
 
@@ -107,7 +108,7 @@ Browser
 
 | Container | Image | Role |
 |---|---|---|
-| `freescout` | `tiredofit/freescout:latest` | App server (Nginx + PHP-FPM + cron) |
+| `freescout` | `nfrastack/freescout:2.2.24` | App server (Nginx + PHP-FPM + cron) |
 | `freescout_db` | `mariadb:11` | Database |
 
 **Volumes:**
@@ -189,13 +190,14 @@ docker run --rm -v freescout_app_data:/data -v $(pwd):/backup alpine \
 
 ### Upgrade FreeScout
 
-The `tiredofit/freescout:latest` image auto-updates when the container restarts (`ENABLE_AUTO_UPDATE=FALSE` is set to prevent this during normal operation). To upgrade:
+The image is pinned in `docker-compose.yml` (`ENABLE_AUTO_UPDATE=FALSE` stops the container from upgrading FreeScout on restart). To upgrade, back up first (see above), bump the tag, then:
 
 ```bash
 ./stop.sh
-docker pull tiredofit/freescout:latest
 ./start.sh
 ```
+
+**Migrating an existing install from `tiredofit/freescout` (1.x image):** the compose file already maps the renamed variables (`SITE_URL`→`APP_URL`, `APP_TRUSTED_HOSTS`→`FREESCOUT_APP_TRUSTED_HOSTS`, `DISPLAY_ERRORS`→`FREESCOUT_APP_DEBUG`) and the log mount (`/www/logs`→`/logs`). On first boot the container migrates `data/app/config` from a file into a directory (`data/app/config/config`) and runs DB migrations only. Dump the database before switching. See the [upstream upgrade notes](https://github.com/nfrastack/container-freescout#upgrading-from-1x).
 
 ---
 

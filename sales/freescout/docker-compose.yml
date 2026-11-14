@@ -34,7 +34,10 @@ services:
 
   # ── Application — host port 8095 ─────────────────────────────────────────────
   freescout:
-    image: tiredofit/freescout:latest
+    # nfrastack/freescout is the successor to tiredofit/freescout (removed from
+    # Docker Hub). 2.x renamed several env vars; the .env names are unchanged
+    # and mapped here.
+    image: nfrastack/freescout:2.2.24
     pull_policy: if_not_present
     container_name: freescout
     restart: unless-stopped
@@ -49,16 +52,17 @@ services:
       DB_NAME: freescout
       DB_USER: freescout
       DB_PASS: "${DB_PASSWORD}"
-      SITE_URL: "${SITE_URL:-http://localhost:8095}"
-      APP_TRUSTED_HOSTS: "${APP_TRUSTED_HOSTS:-}"
+      APP_URL: "${SITE_URL:-http://localhost:8095}"
+      # Hosts other than APP_URL's get a 403; include the name-proxy route.
+      FREESCOUT_APP_TRUSTED_HOSTS: "${APP_TRUSTED_HOSTS:-localhost,127.0.0.1,freescout.localhost}"
       ADMIN_EMAIL: "${ADMIN_EMAIL}"
       ADMIN_PASS: "${ADMIN_PASS}"
-      DISPLAY_ERRORS: "FALSE"
+      FREESCOUT_APP_DEBUG: "FALSE"
       ENABLE_AUTO_UPDATE: "FALSE"
       SETUP_TYPE: AUTO
     volumes:
       - ${FREESCOUT_APP_DATA_PATH:-./data/app}:/data
-      - ${FREESCOUT_LOGS_PATH:-./data/logs}:/www/logs
+      - ${FREESCOUT_LOGS_PATH:-./data/logs}:/logs
     ports:
       - "${FREESCOUT_PORT:-8095}:80"
     networks:
