@@ -85,7 +85,7 @@ Interactive full teardown with confirmation prompt — removes all containers, v
 | `ADMIN_EMAIL` | `admin@admin.com` | Admin login email — set before first start; ignored after DB is seeded |
 | `ADMIN_PASS` | `changeme` | Admin password — set before first start; **change this** |
 | `SITE_URL` | `http://localhost:8095` | Must match the browser URL; changing it after first start requires a DB update |
-| `APP_TRUSTED_HOSTS` | `localhost,127.0.0.1,freescout.localhost` | Hostnames FreeScout answers on; others get a 403. Keep `localhost` (used by the healthcheck) and add `SITE_URL`'s hostname if it differs |
+| `APP_TRUSTED_HOSTS` | `localhost,127.0.0.1,host.docker.internal,freescout.localhost` | Hostnames FreeScout answers on; others get a 403. Keep `localhost` (used by the healthcheck) and `host.docker.internal` (cross-container API calls), and add `SITE_URL`'s hostname if it differs |
 | `FREESCOUT_PORT` | `8095` | Host port |
 | `DB_PASSWORD` | `freescout_db_pass` | MariaDB app user password |
 | `MYSQL_ROOT_PASSWORD` | `freescout_root_pass` | MariaDB root password |
