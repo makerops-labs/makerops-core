@@ -93,7 +93,7 @@ Interactive full teardown — lists everything that will be removed, prompts for
 
 | Variable | Value | Notes |
 |---|---|---|
-| `APP_RELEASE` | `v1.3.0` | Image tag for all Plane services; update together |
+| `APP_RELEASE` | `v1.4.3` | Image tag for all Plane services; update together |
 | `LISTEN_HTTP_PORT` | `8100` | Host port |
 | `WEB_URL` | `http://localhost:8100` | Must match the browser URL; used in emails and API responses |
 | `SECRET_KEY` | *(generated)* | Django secret key — **never change** after first run; invalidates all sessions |
@@ -142,16 +142,16 @@ plane_create_bucket — One-shot MinIO bucket initialisation (exits after succes
 | `plane_redis` | `valkey/valkey:7.2.11-alpine` | Cache and Celery results backend |
 | `plane_mq` | `rabbitmq:3.13.6-management-alpine` | Celery message broker |
 | `plane_minio` | `minio/minio:latest` | Object storage (file uploads) |
-| `plane_migrator` | `makeplane/plane-backend:v1.3.0` | One-shot migration runner |
+| `plane_migrator` | `makeplane/plane-backend:v1.4.3` | One-shot migration runner |
 | `plane_create_bucket` | `minio/mc:latest` | One-shot MinIO bucket creation |
-| `plane_api` | `makeplane/plane-backend:v1.3.0` | Django/Gunicorn API |
-| `plane_worker` | `makeplane/plane-backend:v1.3.0` | Celery worker |
-| `plane_beat_worker` | `makeplane/plane-backend:v1.3.0` | Celery beat scheduler |
-| `plane_web` | `makeplane/plane-frontend:v1.3.0` | Next.js web frontend |
-| `plane_space` | `makeplane/plane-space:v1.3.0` | Public spaces frontend |
-| `plane_admin` | `makeplane/plane-admin:v1.3.0` | God Mode admin panel |
-| `plane_live` | `makeplane/plane-live:v1.3.0` | Real-time collaboration (Node.js) |
-| `plane_proxy` | `makeplane/plane-proxy:v1.3.0` | Reverse proxy (routes all traffic) |
+| `plane_api` | `makeplane/plane-backend:v1.4.3` | Django/Gunicorn API |
+| `plane_worker` | `makeplane/plane-backend:v1.4.3` | Celery worker |
+| `plane_beat_worker` | `makeplane/plane-backend:v1.4.3` | Celery beat scheduler |
+| `plane_web` | `makeplane/plane-frontend:v1.4.3` | Next.js web frontend |
+| `plane_space` | `makeplane/plane-space:v1.4.3` | Public spaces frontend |
+| `plane_admin` | `makeplane/plane-admin:v1.4.3` | God Mode admin panel |
+| `plane_live` | `makeplane/plane-live:v1.4.3` | Real-time collaboration (Node.js) |
+| `plane_proxy` | `makeplane/plane-proxy:v1.4.3` | Reverse proxy (routes all traffic) |
 
 **Volumes:**
 
