@@ -28,7 +28,7 @@ services:
 
   webapp:
     container_name: trigger_webapp
-    image: ghcr.io/triggerdotdev/trigger.dev:${TRIGGER_IMAGE_TAG:-v4.4.6}
+    image: ghcr.io/triggerdotdev/trigger.dev:${TRIGGER_IMAGE_TAG:-v4.8.5}
     restart: unless-stopped
     logging: *logging
     ports:
@@ -59,6 +59,9 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: "6379"
       REDIS_TLS_DISABLED: "true"
+      # v4.8+ defaults realtime streams to v2, which needs upstream's bundled
+      # s2-lite service. Stay on the Redis-backed v1 streams instead.
+      REALTIME_STREAMS_DEFAULT_VERSION: ${REALTIME_STREAMS_DEFAULT_VERSION:-v1}
       DEPLOY_REGISTRY_HOST: ${DOCKER_REGISTRY_URL:-localhost:5000}
       DEPLOY_REGISTRY_NAMESPACE: ${DOCKER_REGISTRY_NAMESPACE:-trigger}
       DEV_OTEL_EXPORTER_OTLP_ENDPOINT: ${APP_ORIGIN}/otel
@@ -194,7 +197,7 @@ services:
 
   supervisor:
     container_name: trigger_supervisor
-    image: ghcr.io/triggerdotdev/supervisor:${TRIGGER_IMAGE_TAG:-v4.4.6}
+    image: ghcr.io/triggerdotdev/supervisor:${TRIGGER_IMAGE_TAG:-v4.8.5}
     restart: unless-stopped
     logging: *logging
     depends_on:

@@ -55,7 +55,7 @@ Eight containers managed by this stack, plus the shared Garage service:
 
 | Container | Image | Role |
 | --- | --- | --- |
-| `trigger_webapp` | `ghcr.io/triggerdotdev/trigger.dev:v4.4.6` | UI, API, task scheduler |
+| `trigger_webapp` | `ghcr.io/triggerdotdev/trigger.dev:v4.8.5` | UI, API, task scheduler |
 | `trigger_db` | `postgres:16` | Task history, configs, run state |
 | `trigger_redis` | `redis:7` | Job queue and pub/sub |
 | `trigger_electric` | `electricsql/electric:1.2.4` | Real-time PostgreSQL sync |
@@ -114,6 +114,7 @@ Eight containers managed by this stack, plus the shared Garage service:
 | `RUN_REPLICATION_*` | Run data replication to ClickHouse |
 | `OBJECT_STORE_*` | Garage S3 connection (sourced automatically) |
 | `DOCKER_REGISTRY_*` | Local container registry credentials |
+| `REALTIME_STREAMS_DEFAULT_VERSION` | `v1` (default here): Redis-backed realtime streams. Upstream v4.8+ defaults to `v2`, which needs their bundled s2-lite service (not included) |
 
 ### Immutable secrets (never change after first run)
 

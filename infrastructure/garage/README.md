@@ -86,7 +86,7 @@ sed -i 's/^GARAGE_SECRET_ACCESS_KEY=.*/GARAGE_SECRET_ACCESS_KEY=/' .env
 
 | Variable | Value | Notes |
 |---|---|---|
-| `GARAGE_VERSION` | `v2.3.0` | Pinned image tag |
+| `GARAGE_VERSION` | `v2.5.0` | Pinned image tag |
 | `GARAGE_ACCESS_KEY_ID` | *(generated)* | Default S3 key ID; written on first start |
 | `GARAGE_SECRET_ACCESS_KEY` | *(generated)* | Default S3 secret; written on first start |
 
@@ -112,7 +112,7 @@ Admin tools / CLI
 
 | Container | Image | Role |
 |---|---|---|
-| `garage` | `dxflrs/garage:v2.3.0` | S3 API + Admin API |
+| `garage` | `dxflrs/garage:v2.5.0` | S3 API + Admin API |
 
 **Bind mounts (local directories):**
 
