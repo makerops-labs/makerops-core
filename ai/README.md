@@ -19,15 +19,18 @@ Follow the official installation guide through to the verification step and conf
 | Service | Port | Purpose |
 | ------- | ---- | ------- |
 | [Ollama](https://ollama.com) | [11434](http://localhost:11434) | Local LLM inference — run open-weight models (Llama, Mistral, Gemma, Qwen, etc.) on GPU, with REST and OpenAI-compatible APIs |
+| [llama.cpp](https://github.com/ggml-org/llama.cpp) | [8110](http://localhost:8110) | Router-mode `llama-server` — multi-model, load-on-demand, OpenAI-compatible API; for models that run better on llama.cpp than on Ollama (pick per model by measurement) |
 | [ComfyUI](https://github.com/ai-dock/comfyui) | [8188](http://localhost:8188) | FLUX.1 image generation — node-based workflow UI for generative AI image creation |
 
-Both are self-contained Docker Compose projects with their own `start.sh` / `stop.sh` / `teardown.sh` and `.env.example`. Models are pulled/provisioned on demand and persist in each service's data path.
+All are self-contained Docker Compose projects with their own `start.sh` / `stop.sh` / `teardown.sh` and `.env.example`. Models are pulled/provisioned on demand and persist in each service's data path.
 
 ---
 
 ## Attribution
 
 **Ollama** is open-source software developed and maintained by the [Ollama contributors](https://github.com/ollama/ollama/graphs/contributors), made freely available under the [MIT License](https://github.com/ollama/ollama/blob/main/LICENSE).
+
+**llama.cpp** is open-source software developed by [Georgi Gerganov](https://github.com/ggerganov) and the [ggml-org contributors](https://github.com/ggml-org/llama.cpp/graphs/contributors), made freely available under the [MIT License](https://github.com/ggml-org/llama.cpp/blob/master/LICENSE).
 
 **ComfyUI** is open-source software developed and maintained by [comfyanonymous](https://github.com/comfyanonymous) and contributors, made freely available under the [GNU GPL v3 License](https://github.com/comfyanonymous/ComfyUI/blob/master/LICENSE). Docker packaging by the [ai-dock contributors](https://github.com/ai-dock/comfyui/graphs/contributors) under the [MIT License](https://github.com/ai-dock/comfyui/blob/main/LICENSE).
 
@@ -43,4 +46,4 @@ AI workloads are substantially more resource-intensive than the core stack. Requ
 | Disk | Models range from ~1 GB (smallest quantized) to 70+ GB (large). The `ollama_data` volume grows with each model pulled. A fast NVMe drive is recommended. |
 | RAM | Models that fit VRAM add minimal host RAM overhead. Models larger than VRAM partially offload weights to system RAM — budget roughly the overflow plus a few GB. On WSL2, raise the memory cap in `.wslconfig` if a large model stalls or thrashes. |
 
-See [ollama/README.md](ollama/README.md) for setup instructions, model management, and API usage.
+See [ollama/README.md](ollama/README.md) and [llamacpp/README.md](llamacpp/README.md) for setup instructions, model management, and API usage.

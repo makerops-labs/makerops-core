@@ -88,6 +88,13 @@ server {
     location / { proxy_pass http://host.docker.internal:${OLLAMA_PORT}; }
 }
 
+# ── llama.cpp — Router-Mode LLM Inference API ─────────────────────────────────
+server {
+    listen      80;
+    server_name llamacpp.localhost ~^llamacpp\..+;
+    location / { proxy_pass http://host.docker.internal:${LLAMACPP_PORT}; }
+}
+
 # ── ComfyUI — Image Generation ───────────────────────────────────────────────
 server {
     listen      80;

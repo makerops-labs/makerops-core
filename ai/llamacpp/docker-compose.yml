@@ -1,0 +1,47 @@
+# llamacpp — llama.cpp llama-server in router mode (multi-model, OpenAI-compatible)
+# Project name: llamacpp  (managed by start.sh / stop.sh)
+#
+# Exposes:
+#   8110/tcp — OpenAI-compatible API (host port; container listens on 8080)
+#
+# ⚠ REQUIRES the NVIDIA Container Toolkit on the host before running.
+#   See ai/README.md for the prerequisite installation link.
+#
+# Model GGUF files live outside the repo (LLAMACPP_MODELS_DIR); models.ini
+# (tracked) defines the model presets. See README.md.
+#
+# API: http://localhost:8110
+
+services:
+  llamacpp:
+    # Pinned by digest (llama.cpp build 12774). See README.md for how to bump.
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:207146b5b2f008987416fe51ea6e16a1cefb3d5385742ed03223f0f25fec09a2
+    container_name: llamacpp
+    env_file: .env
+    command: >
+      --models-preset /config/models.ini
+      --models-max 2
+      --models-memory-margin 512
+      --sleep-idle-seconds 300
+      --host 0.0.0.0
+      --port 8080
+    volumes:
+      - ${LLAMACPP_MODELS_DIR}:/models:ro
+      - ./models.ini:/config/models.ini:ro
+    ports:
+      - "${LLAMACPP_PORT:-8110}:8080"
+    # /health is exempt from the idle timer and does not wake sleeping models.
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
