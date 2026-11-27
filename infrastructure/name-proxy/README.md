@@ -47,6 +47,7 @@ On **Windows** (native browser, not WSL2), subdomains of `.localhost` are not re
 127.0.0.1  invoiceninja.localhost
 127.0.0.1  inventree.localhost
 127.0.0.1  ollama.localhost
+127.0.0.1  llamacpp.localhost
 127.0.0.1  comfyui.localhost
 127.0.0.1  wg.localhost
 ```
@@ -79,6 +80,7 @@ All services are available on port 80 — the default HTTP port — so no port n
 | http://invoiceninja.localhost | Invoice Ninja — Accounting | http://localhost:8092 |
 | http://inventree.localhost | InvenTree — Inventory Management | http://localhost:8096 |
 | http://ollama.localhost | Ollama — LLM Inference API | http://localhost:11434 |
+| http://llamacpp.localhost | llama.cpp — Router-Mode LLM API | http://localhost:8110 |
 | http://comfyui.localhost | ComfyUI — Image Generation | http://localhost:8188 |
 | http://wg.localhost | WireGuard (wg-easy) — VPN Management | http://localhost:8820 |
 
@@ -131,6 +133,7 @@ Stops the container. name-proxy holds no persistent data, so nothing is lost.
 | `INVOICENINJA_PORT` | `8092` | `LISTEN_PORT` in `accounting/invoiceninja/.env` |
 | `INVENTREE_PORT` | `8096` | `INVENTREE_WEB_PORT` in `operations/inventree/.env` |
 | `OLLAMA_PORT` | `11434` | *(hard-coded default)* in `ai/ollama/.env` |
+| `LLAMACPP_PORT` | `8110` | `LLAMACPP_PORT` in `ai/llamacpp/.env` |
 | `COMFYUI_PORT` | `8188` | `COMFYUI_PORT_HOST` in `ai/comfyui/.env` |
 | `WG_PORT` | `8820` | `WG_UI_PORT` in `remote_access/wg-easy/.env` |
 
@@ -163,6 +166,7 @@ Browser
               ├─► invoiceninja.localhost →  host.docker.internal:8092  (Invoice Ninja)
               ├─► inventree.localhost    →  host.docker.internal:8096  (InvenTree)
               ├─► ollama.localhost       →  host.docker.internal:11434 (Ollama)
+              ├─► llamacpp.localhost     →  host.docker.internal:8110  (llama.cpp)
               ├─► comfyui.localhost      →  host.docker.internal:8188  (ComfyUI)
               └─► wg.localhost           →  host.docker.internal:8820  (wg-easy)
 ```

@@ -11,8 +11,10 @@ is orchestrated globally. Public repo — never commit secrets or `.env`.
 - `infrastructure/` — garage (S3), lan-dns, **name-proxy** (nginx mapping
   `*.localhost` subdomains → host ports; landing page at `root.localhost`)
 - `remote_access/` — WireGuard (wg-easy), Cloudflare DDNS
-- `ai/` — foundational GPU services only: **Ollama** (11434) and **ComfyUI**
-  (8188). Requires NVIDIA Container Toolkit (see `ai/README.md`).
+- `ai/` — foundational inference and GPU services only: **Ollama** (11434), **llama.cpp**
+  router (8110; per-model engine choice on measured evidence, idle-sleeps to
+  share VRAM with Ollama) and **ComfyUI** (8188). Requires NVIDIA Container
+  Toolkit (see `ai/README.md`).
 - `docs/env-conventions.md` — env-file conventions; each service README is
   its own source of truth (ports, setup, cheat sheet).
 

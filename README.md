@@ -90,6 +90,7 @@ AI services for local LLM inference and agent workflows are documented in [ai/RE
 | Service | Port | Purpose |
 | ------- | ---- | ------- |
 | [Ollama](https://ollama.com) | [11434](http://localhost:11434) | Local LLM inference — run open-weight models on GPU |
+| [llama.cpp](https://github.com/ggml-org/llama.cpp) | [8110](http://localhost:8110) | Router-mode llama-server — multi-model OpenAI-compatible inference |
 | [ComfyUI](https://github.com/ai-dock/comfyui) | [8188](http://localhost:8188) | FLUX.1 image generation — node-based workflow UI |
 
 See [ai/README.md](ai/README.md) for prerequisites (NVIDIA Container Toolkit) and setup instructions.
